@@ -1,16 +1,6 @@
 
-
-let request = (url, callback) => {
-    fetch(url).then( (res) => {
-        res.json().then((data) => {
-            callback(data);
-        });
-    });
-}
-
-let requestMovie = (movieName, callback) => {
-    request('https://www.omdbapi.com/?apikey=bbfde27a&t=' + movieName, callback);
-}
+let request = (url, callback) => fetch(url).then( (res) => res.json().then((data) =>  callback(data)));
+let requestMovie = (movieName, callback) => request('https://www.omdbapi.com/?apikey=bbfde27a&t=' + movieName, callback);
 
 let render = (data, callback = function () {}) => {
     let div = document.createElement('div');
@@ -26,9 +16,7 @@ let render = (data, callback = function () {}) => {
 let asyncSeries = (tasks) => {
     if (tasks.length) {
         let task = tasks.shift();
-        let cb = () => {
-            asyncSeries(tasks);
-        };
+        let cb = () =>  asyncSeries(tasks);
         task(cb);
     }
 }
